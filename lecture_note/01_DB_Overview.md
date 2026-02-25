@@ -55,15 +55,15 @@ Database (데이터베이스)
 
 #### **File System vs Database**
 
-| Item | File System | Database |
-| ------------------- | ---------------- | ---------------- |
-| **Storage Method** | Individual files | Integrated data |
-| **Redundancy** | High | Minimized |
-| **Access Method** | Program-dependent | Independent |
-| **Security** | Low | High |
-| **Efficiency** | Low | High |
-| **Concurrent Access** | Difficult | Easy |
-| **Example** | Excel, CSV | MySQL, Oracle |
+| Item                        | File System       | Database        |
+| --------------------------- | ----------------- | --------------- |
+| **Storage Method**    | Individual files  | Integrated data |
+| **Redundancy**        | High              | Minimized       |
+| **Access Method**     | Program-dependent | Independent     |
+| **Security**          | Low               | High            |
+| **Efficiency**        | Low               | High            |
+| **Concurrent Access** | Difficult         | Easy            |
+| **Example**           | Excel, CSV        | MySQL, Oracle   |
 
 **Comparison Example**
 
@@ -203,13 +203,13 @@ Why Choose MySQL:
 
 #### **Comparison with Other RDBMS**
 
-| Characteristic | MySQL | Oracle | SQL Server | PostgreSQL |
-| --------------------- | -------------- | ------------ | ------------ | ---------- |
-| **Price** | Free | Very Expensive | Expensive | Free |
-| **Learning Curve** | Easy | Difficult | Moderate | Moderate |
-| **For Web Use** | Excellent | Enterprise | Enterprise | Good |
-| **Market Share in Korea** | High | High | Moderate | Low |
-| **Recommended For** | Beginners, Web | Large Corp | Large Corp | Developers |
+| Characteristic                  | MySQL          | Oracle         | SQL Server | PostgreSQL |
+| ------------------------------- | -------------- | -------------- | ---------- | ---------- |
+| **Price**                 | Free           | Very Expensive | Expensive  | Free       |
+| **Learning Curve**        | Easy           | Difficult      | Moderate   | Moderate   |
+| **For Web Use**           | Excellent      | Enterprise     | Enterprise | Good       |
+| **Market Share in Korea** | High           | High           | Moderate   | Low        |
+| **Recommended For**       | Beginners, Web | Large Corp     | Large Corp | Developers |
 
 ---
 
@@ -513,6 +513,7 @@ product 테이블에 최소 3개 이상의 상품 데이터를 입력하세요. 
 
 ---
 
-Thank you for your attention.
-
+Thank you for your attention.   
 Cho Jeonghyun (peterchokr@gmail.com). Yeungnam University College
+
+"Produced in collaboration with Claude and Gemini."
