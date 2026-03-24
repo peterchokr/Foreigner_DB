@@ -236,52 +236,7 @@ ORDER BY category ASC, price DESC;
 SELECT title, rating FROM movie 
 ORDER BY rating DESC LIMIT 3;
 
--- =====================================================
--- 3-3. Advanced Practice (고급 실습)
--- =====================================================
--- Practice 3-21~3-33: Complex Queries (복합 조회)
 
--- 21. Query product name and discounted price (20% discount) (상품명과 '할인가' 20% 할인 조회)
-SELECT product_name, price * 0.8 AS 'Discount Price' FROM product;
-
--- 22. Query all movie information sorted by rating descending (영화 정보를 평점 내림차순으로 정렬하여 모두 조회)
-SELECT * FROM movie ORDER BY rating DESC;
-
--- 23. Query all categories removing duplicate product categories (상품 중복 카테고리 제거하여 모든 카테고리 조회)
-SELECT DISTINCT category FROM product;
-
--- 24. Query only top 5 products from all products (전체 상품 중 상위 5개만 조회)
-SELECT * FROM product LIMIT 5;
-
--- 25. Query movie title and rating sorted by high rating (영화 제목과 평점을 평점 높은 순으로 조회)
-SELECT title AS 'Movie Title', rating AS 'Rating' 
-FROM movie ORDER BY rating DESC;
-
--- 26. Query 5 products starting from 3rd (상품 중 3번째부터 5개 조회)
-SELECT product_name, price FROM product LIMIT 5 OFFSET 2;
-
--- 27. Query movie title, director, release year sorted by year (영화의 제목, 감독, 개봉년도 조회 연도순 정렬)
-SELECT title, director, release_year 
-FROM movie ORDER BY release_year;
-
--- 28. Sort products by stock descending, then by price descending (상품을 재고 많은 순으로, 같으면 가격 비싼 순으로 정렬)
-SELECT product_name, stock, price 
-FROM product ORDER BY stock DESC, price DESC;
-
--- 29. Query movie title, rating, director sorted by rating (영화 제목과 평점, 감독을 평점순으로 조회)
-SELECT title, rating, director FROM movie ORDER BY rating DESC;
-
--- 30. Query product name, price, category sorted by category (상품명과 가격, 카테고리를 카테고리순으로 조회)
-SELECT product_name, price, category FROM product ORDER BY category;
-
--- 31. Query only 2023 movies (title, director only) (2023년 개봉 영화만 조회 제목, 감독만)
-SELECT title, director FROM movie WHERE release_year = 2023;
-
--- 32. Query products with price 50000 or more (가격이 50000원 이상인 상품만 조회)
-SELECT * FROM product WHERE price >= 50000;
-
--- 33. Query top 5 movies by rating (평점이 높은 순으로 상위 5개 영화 조회)
-SELECT title, rating FROM movie ORDER BY rating DESC LIMIT 5;
 ```
 
 ---
