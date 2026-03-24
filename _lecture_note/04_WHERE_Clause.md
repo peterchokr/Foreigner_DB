@@ -202,40 +202,7 @@ SELECT * FROM customer WHERE city IN ('Seoul', 'Busan') AND grade = 'Gold';
 -- 30. Query customers age 30 to 45 with salary 4000000 or more (30세 이상 45세 이하이면서 월급이 4000000 이상)
 SELECT * FROM customer WHERE age BETWEEN 30 AND 45 AND salary >= 4000000;
 
--- =====================================================
--- 3-4. NULL Handling and Complex Conditions (NULL 처리 및 복합 조건)
--- =====================================================
--- Practice 4-31~4-40: NULL Handling and Complex Conditions (NULL 처리 및 복합 조건)
 
--- 31. Query customers with registered phone numbers (휴대폰 번호가 등록된 고객)
-SELECT * FROM customer WHERE phone IS NOT NULL;
-
--- 32. Query customers without phone numbers (휴대폰 번호가 없는 고객)
-SELECT * FROM customer WHERE phone IS NULL;
-
--- 33. Query customers residing in Seoul or Platinum grade (서울 거주자이거나 Platinum 등급인 고객)
-SELECT * FROM customer WHERE city = 'Seoul' OR grade = 'Platinum';
-
--- 34. Query customers with salary less than 3500000 (월급이 3500000 미만인 고객)
-SELECT * FROM customer WHERE salary < 3500000;
-
--- 35. Query customers with salary greater than 5000000 (월급이 5000000 초과인 고객)
-SELECT * FROM customer WHERE salary > 5000000;
-
--- 36. Query customers age 25 to 40 with phone numbers (25세 이상 40세 이하인 고객 중 휴대폰이 있는 고객)
-SELECT * FROM customer WHERE age BETWEEN 25 AND 40 AND phone IS NOT NULL;
-
--- 37. Query customers with Silver or Gold grade and salary 4000000 or more (Silver 또는 Gold 등급이면서 월급이 4000000 이상)
-SELECT * FROM customer WHERE grade IN ('Silver', 'Gold') AND salary >= 4000000;
-
--- 38. Query customers residing in Daegu and age 30 or over (대구 거주하면서 나이가 30세 이상인 고객)
-SELECT * FROM customer WHERE city = 'Daegu' AND age >= 30;
-
--- 39. Query customers with names containing '지' and age 30 or over (이름에 '지'를 포함하는 고객 중 30세 이상)
-SELECT * FROM customer WHERE name LIKE '%Ji%' AND age >= 30;
-
--- 40. Query customers with Platinum grade or salary 6000000 or more (Platinum 등급이거나 월급이 6000000 이상인 고객)
-SELECT * FROM customer WHERE grade = 'Platinum' OR salary >= 6000000;
 ```
 
 ---
