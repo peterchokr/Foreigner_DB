@@ -22,7 +22,7 @@ In this section, you will learn the SELECT statement, which is the foundation of
 
 이 섹션에서는 SQL의 가장 기본이 되는 SELECT 문을 배웁니다. SELECT 문의 실행 순서와 각 절의 역할을 이해하고, 열 선택, 중복 제거, 별칭 지정, 정렬, 행 제한 등 다양한 기능을 학습합니다. 이를 통해 데이터베이스에서 원하는 데이터를 효과적으로 조회하는 능력을 기르게 됩니다.
 
-### Create Table and Insert Data
+### Create Table and Insert Data (Sample)
 
 
 ```sql
