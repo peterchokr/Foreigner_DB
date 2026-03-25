@@ -22,6 +22,44 @@ In this section, you will learn the SELECT statement, which is the foundation of
 
 이 섹션에서는 SQL의 가장 기본이 되는 SELECT 문을 배웁니다. SELECT 문의 실행 순서와 각 절의 역할을 이해하고, 열 선택, 중복 제거, 별칭 지정, 정렬, 행 제한 등 다양한 기능을 학습합니다. 이를 통해 데이터베이스에서 원하는 데이터를 효과적으로 조회하는 능력을 기르게 됩니다.
 
+### Create Table and Insert Data
+
+
+```sql
+CREATE TABLE students (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    department VARCHAR(50),
+    gpa DECIMAL(3, 2),
+    signup_date DATE DEFAULT (CURRENT_DATE)
+);
+```
+
+```sql
+INSERT INTO students (student_id, name, department, gpa) VALUES
+(1001, 'James Smith', 'Computer Science', 3.85),
+(1002, 'Emma Johnson', 'Mathematics', 3.92),
+(1003, 'Michael Brown', 'Physics', 3.40),
+(1004, 'Sophia Williams', 'Business', 3.65),
+(1005, 'William Jones', 'Biology', 3.20),
+(1006, 'Olivia Garcia', 'Computer Science', 4.00),
+(1007, 'Liam Miller', 'Mathematics', 3.75),
+(1008, 'Isabella Davis', 'Physics', 3.55),
+(1009, 'Ethan Rodriguez', 'Business', 3.10),
+(1010, 'Ava Martinez', 'Biology', 3.45),
+(1011, 'Mason Hernandez', 'Computer Science', 3.88),
+(1012, 'Mia Lopez', 'Mathematics', 3.72),
+(1013, 'Lucas Gonzalez', 'Computer Science', 3.95),
+(1014, 'Charlotte Wilson', 'Business', 3.30),
+(1015, 'Noah Anderson', 'Physics', 3.60),
+(1016, 'Amelia Thomas', 'Biology', 3.80),
+(1017, 'Logan Taylor', 'Computer Science', 3.48),
+(1018, 'Harper Moore', 'Physics', 3.15),
+(1019, 'Elijah Jackson', 'Mathematics', 3.90),
+(1020, 'Evelyn Martin', 'Business', 3.68);
+```
+
+
 ### 1-1. Basic Structure of SELECT Statement
 
 #### **Basic Form**
