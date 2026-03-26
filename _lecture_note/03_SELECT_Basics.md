@@ -73,65 +73,65 @@ FROM table_name;
 
 ```
 * Usage: Query all columns (모든 열 조회)
-SELECT * FROM student;
+SELECT * FROM students;
 
 Specific columns only: Query only required columns (필요한 열만 조회)
-SELECT student_id, name FROM student;
+SELECT student_id, name FROM students;
 
 Multiple columns: Query in desired order (원하는 순서대로 조회)
-SELECT name, student_id, gpa FROM student;
+SELECT name, student_id, gpa FROM students;
 ```
 
 ### 1-3. Column Alias
 
 ```sql
 -- Using AS (AS 사용)
-SELECT student_id AS student_number, name AS student_name FROM student;
+SELECT student_id AS student_number, name AS student_name FROM students;
 
 -- Omit AS (AS 생략)
-SELECT student_id student_number, name student_name FROM student;
+SELECT student_id student_number, name student_name FROM students;
 
 -- Include quotes if contains spaces (공백 포함 시 따옴표)
-SELECT student_id AS 'Student ID' FROM student;
+SELECT student_id AS 'Student ID' FROM students;
 ```
 
 ### 1-4. DISTINCT (Remove Duplicates - 중복 제거)
 
 ```sql
 -- Remove duplicates from department information (학과 정보 중복 제거)
-SELECT DISTINCT department FROM student;
+SELECT DISTINCT department FROM students;
 
 -- Remove duplicates from multiple columns (여러 열 중복 제거)
-SELECT DISTINCT department, gpa FROM student;
+SELECT DISTINCT department, gpa FROM students;
 ```
 
 ### 1-5. LIMIT (Limit Number of Rows - 행 수 제한)
 
 ```sql
 -- Query top 5 only (상위 5개만 조회)
-SELECT * FROM student LIMIT 5;
+SELECT * FROM students LIMIT 5;
 
 -- Query 10 records starting from 6th (6번째부터 10개 조회)
-SELECT * FROM student LIMIT 5 OFFSET 5;
+SELECT * FROM students LIMIT 5 OFFSET 5;
 
 -- Pagination: 10 per page (페이지네이션: 한 페이지에 10개)
 -- Page 1 (1페이지)
-SELECT * FROM student LIMIT 10;
+SELECT * FROM students LIMIT 10;
 -- Page 2 (2페이지)
-SELECT * FROM student LIMIT 10 OFFSET 10;
+SELECT * FROM students LIMIT 10 OFFSET 10;
 ```
 
 ### 1-6. ORDER BY (Sorting - 정렬)
 
 ```sql
 -- Ascending (오름차순, ASC)
-SELECT * FROM student ORDER BY gpa ASC;
+SELECT * FROM students ORDER BY gpa ASC;
 
 -- Descending (내림차순, DESC)
-SELECT * FROM student ORDER BY gpa DESC;
+SELECT * FROM students ORDER BY gpa DESC;
 
 -- Multiple column sorting: Department ascending, GPA descending (복수 열 정렬: 학과별 오름차순, 학점 내림차순)
-SELECT * FROM student 
+SELECT * FROM students 
 ORDER BY department ASC, gpa DESC;
 ```
 
