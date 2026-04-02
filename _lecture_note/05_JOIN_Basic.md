@@ -225,7 +225,7 @@ SELECT DISTINCT s.student_name
 FROM student s
 INNER JOIN enrollment e ON s.student_id = e.student_id
 WHERE e.grade IN ('A', 'B');
-
+```
 
 
 ---
