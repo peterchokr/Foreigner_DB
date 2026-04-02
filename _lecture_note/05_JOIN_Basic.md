@@ -55,28 +55,7 @@ graph TD
     style D fill:#c8e6c9
 ```
 
-### 1-3. LEFT JOIN (LEFT OUTER JOIN)
-
-LEFT JOIN queries all data from the left table and matching data from the right table. All rows from the left table are included, and NULL is displayed if there is no matching data in the right table.
-
-LEFT JOIN은 왼쪽 테이블의 모든 데이터와 오른쪽 테이블의 일치하는 데이터를 조회합니다. 왼쪽 테이블의 모든 행이 포함되며, 오른쪽 테이블에 일치하는 데이터가 없으면 NULL이 표시됩니다.
-
-```mermaid
-graph TD
-    A["employees<br/>all rows"] --> B["LEFT JOIN departments<br/>ON employees.dept_id = departments.dept_id"]
-    B --> C["result"]
-    C --> C1["all rows of employees"]
-    C --> C2["+ matching departments data"]
-    C --> C3["+ NULL (when no match)"]
-  
-    style A fill:#e8f5e9
-    style B fill:#fff9c4
-    style C1 fill:#c8e6c9
-    style C2 fill:#aed581
-    style C3 fill:#ffcdd2
-```
-
-### 1-4. ON Clause vs WHERE Clause
+### 1-3. ON Clause vs WHERE Clause
 
 The ON clause specifies the condition for the JOIN and defines how to connect two tables. The WHERE clause applies additional filters to the JOIN result to include only desired rows in the final result.
 
@@ -247,139 +226,7 @@ FROM student s
 INNER JOIN enrollment e ON s.student_id = e.student_id
 WHERE e.grade IN ('A', 'B');
 
--- =====================================================
--- 3-2. LEFT JOIN Practice (LEFT JOIN 실습)
--- =====================================================
--- Practice 5-12~5-20: LEFT JOIN (LEFT JOIN)
 
--- 12. Query all professors and their courses (모든 교수와 담당 강좌 조회 강좌 없는 교수도 포함)
-SELECT p.professor_name, c.course_name
-FROM professor p
-LEFT JOIN course c ON p.professor_id = c.professor_id;
-
--- 13. Query all students and their courses (모든 학생과 수강한 강좌 수강 강좌 없는 학생도 포함)
-SELECT s.student_name, c.course_name
-FROM student s
-LEFT JOIN enrollment e ON s.student_id = e.student_id
-LEFT JOIN course c ON e.course_id = c.course_id;
-
--- 14. Query all courses and enrollment count (모든 강좌와 수강 학생 수 수강생 없는 강좌도 포함)
-SELECT c.course_name, COUNT(e.student_id) AS enrollment_count
-FROM course c
-LEFT JOIN enrollment e ON c.course_id = e.course_id
-GROUP BY c.course_name;
-
--- 15. Query courses with professors and students (강좌별 담당 교수와 수강생 현황)
-SELECT c.course_name, p.professor_name, s.student_name
-FROM course c
-LEFT JOIN professor p ON c.professor_id = p.professor_id
-LEFT JOIN enrollment e ON c.course_id = e.course_id
-LEFT JOIN student s ON e.student_id = s.student_id;
-
--- 16. Find professors without assigned courses (아직 강좌가 배정되지 않은 교수)
-SELECT p.professor_name
-FROM professor p
-LEFT JOIN course c ON p.professor_id = c.professor_id
-WHERE c.course_id IS NULL;
-
--- 17. Find students without enrolled courses (아직 수강한 강좌가 없는 학생)
-SELECT s.student_name
-FROM student s
-LEFT JOIN enrollment e ON s.student_id = e.student_id
-WHERE e.enrollment_id IS NULL;
-
--- 18. Count courses per professor (모든 교수별 담당 강좌 수)
-SELECT p.professor_name, COUNT(c.course_id) AS course_count
-FROM professor p
-LEFT JOIN course c ON p.professor_id = c.professor_id
-GROUP BY p.professor_name;
-
--- 19. Query all student enrollment status (모든 학생의 수강 현황 COUNT 활용)
-SELECT s.student_name, COUNT(e.student_id) AS courses_taken
-FROM student s
-LEFT JOIN enrollment e ON s.student_id = e.student_id
-GROUP BY s.student_name;
-
--- 20. Query total credits per student (학생별 총 수강학점 COALESCE 활용)
-SELECT s.student_name, COALESCE(SUM(c.credits), 0) AS total_credits
-FROM student s
-LEFT JOIN enrollment e ON s.student_id = e.student_id
-LEFT JOIN course c ON e.course_id = c.course_id
-GROUP BY s.student_name;
-
--- =====================================================
--- 3-3. Complex JOIN and Advanced Practice (복합 JOIN 및 고급 실습)
--- =====================================================
--- Practice 5-21~5-30: Complex JOIN and Filtering (복합 JOIN 및 필터링)
-
--- 21. Count students by grade (성적별 학생 수 집계)
-SELECT e.grade, COUNT(e.student_id) AS student_count
-FROM enrollment e
-GROUP BY e.grade;
-
--- 22. Count courses per major (전공별 수강 강좌 수 LEFT JOIN + GROUP BY)
-SELECT s.major, COUNT(DISTINCT e.course_id) AS course_count
-FROM student s
-LEFT JOIN enrollment e ON s.student_id = e.student_id
-GROUP BY s.major;
-
--- 23. Query students taking 2 or more courses (2개 이상의 강좌를 수강하는 학생 HAVING)
-SELECT s.student_name, COUNT(e.course_id) AS courses_taken
-FROM student s
-INNER JOIN enrollment e ON s.student_id = e.student_id
-GROUP BY s.student_name
-HAVING COUNT(e.course_id) >= 2;
-
--- 24. Count unique students per professor (교수별 수강생 합계 LEFT JOIN + COUNT DISTINCT)
-SELECT p.professor_name, COUNT(DISTINCT e.student_id) AS student_count
-FROM professor p
-LEFT JOIN course c ON p.professor_id = c.professor_id
-LEFT JOIN enrollment e ON c.course_id = e.course_id
-GROUP BY p.professor_name;
-
--- 25. Query grade distribution by course (강좌별 학점 분포 GROUP BY 2개 컬럼)
-SELECT c.course_name, e.grade, COUNT(*) AS count
-FROM course c
-LEFT JOIN enrollment e ON c.course_id = e.course_id
-GROUP BY c.course_name, e.grade
-ORDER BY c.course_name;
-
--- 26. Query AI students per course (AI소프트웨어학과 학생들의 강좌별 수강인원)
-SELECT c.course_name, COUNT(DISTINCT e.student_id) AS ai_enrollment_count
-FROM course c
-LEFT JOIN enrollment e ON c.course_id = e.course_id
-LEFT JOIN student s ON e.student_id = s.student_id
-WHERE s.major = 'AI Software Engineering'
-GROUP BY c.course_name;
-
--- 27. Query courses with A grades (A학점 수강생이 있는 강좌 DISTINCT)
-SELECT DISTINCT c.course_name
-FROM course c
-INNER JOIN enrollment e ON c.course_id = e.course_id
-WHERE e.grade = 'A';
-
--- 28. Find courses without professors (교수 없는 강좌 확인 WHERE IS NULL)
-SELECT c.course_name
-FROM course c
-LEFT JOIN professor p ON c.professor_id = p.professor_id
-WHERE p.professor_id IS NULL;
-
--- 29. Query courses offered by each professor (각 교수의 강좌 개설 현황 GROUP_CONCAT)
-SELECT p.professor_name, 
-       GROUP_CONCAT(c.course_name SEPARATOR ', ') AS offered_courses
-FROM professor p
-LEFT JOIN course c ON p.professor_id = c.professor_id
-GROUP BY p.professor_name;
-
--- 30. Query completed courses and credits per student (학생별 이수 강좌 및 학점 GROUP_CONCAT + SUM)
-SELECT s.student_name, 
-       GROUP_CONCAT(c.course_name SEPARATOR ', ') AS completed_courses,
-       SUM(c.credits) AS total_credits
-FROM student s
-INNER JOIN enrollment e ON s.student_id = e.student_id
-INNER JOIN course c ON e.course_id = c.course_id
-GROUP BY s.student_name;
-```
 
 ---
 
@@ -395,11 +242,7 @@ INNER JOIN과 LEFT JOIN의 가장 근본적인 차이를 설명하고, 각각이
 
 ON 절의 역할을 설명하고, WHERE 절과 어떻게 다르게 작용하는지 구체적인 쿼리 예시를 들어 설명하세요.
 
-**Assignment 3**: When joining multiple tables, explain whether the order of tables affects the results, and discuss why the position of the left table is important in LEFT JOIN.
-
-여러 테이블을 JOIN할 때 테이블의 순서가 결과에 영향을 미치는지 설명하고, LEFT JOIN의 경우 왼쪽 테이블의 위치가 중요한 이유를 논의하세요.
-
-**Assignment 4**: Explain the impact of NULL values on JOIN operations and present methods for predicting JOIN results when NULL is present.
+**Assignment 3**: Explain the impact of NULL values on JOIN operations and present methods for predicting JOIN results when NULL is present.
 
 NULL 값이 JOIN 연산에 미치는 영향을 설명하고, NULL이 있을 때의 JOIN 결과 예측 방법을 제시하세요.
 
@@ -421,19 +264,6 @@ professor, course 테이블을 INNER JOIN하여 강좌명과 담당교수명을 
 
 student, enrollment, course 테이블을 순차적으로 INNER JOIN하여 학생명, 수강강좌명, 성적을 모두 표시하는 쿼리를 작성하세요.
 
-**Assignment 3**: Use LEFT JOIN on the professor table to query course information. Professors without assigned courses must be included.
-
-professor 테이블을 LEFT JOIN하여 담당강좌 정보를 조회하세요. 담당강좌가 없는 교수도 포함되어야 합니다.
-
-**Assignment 4**: Use LEFT JOIN on the student table to query all students and their enrolled courses, including students without any enrolled courses.
-
-student 테이블을 LEFT JOIN하여 모든 학생과 그들이 수강한 강좌를 조회하되, 수강 강좌가 없는 학생도 표시되도록 작성하세요.
-
-**Assignment 5**: Execute all queries provided from Practice 5-1 to 5-30 in Part 3 directly and attach screenshots of each query result.
-
-Part 3의 실습 5-1부터 5-30까지 제공된 모든 쿼리를 직접 실행하고, 각 쿼리의 실행 결과를 스크린샷으로 첨부하세요.
-
-**Submission Format**: SQL file (Ch5_JOIN_Practice_[StudentID].sql) and screenshots
 
 ---
 
