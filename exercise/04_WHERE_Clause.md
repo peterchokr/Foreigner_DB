@@ -334,7 +334,7 @@ Submission:
 |    6    |   ②   | AND has higher priority than OR (AND가 OR보다 우선순위가 높음)                                                       |
 |    7    |   ②   | BETWEEN 20 AND 30 = >= 20 AND <= 30                                                                                  |
 |    8    |   ③   | AND conditions are evaluated regardless of order, all must be true (AND 조건들은 순서와 상관없이 모두 만족해야 TRUE) |
-|    9    |  ①②  | Both possible but IN is more concise (둘 다 가능하지만 IN이 더 간결)                                                 |
+|    9    |  ③  | Both possible but IN is more concise (둘 다 가능하지만 IN이 더 간결)                                                 |
 |    10    |   ④   | Both ① and ② are correct (③ has inverted condition) (①②가 모두 올바름)                                          |
 
 ---
