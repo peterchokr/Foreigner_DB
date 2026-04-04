@@ -64,10 +64,10 @@ After completing Chapter 5, you should understand the following:
    INNER JOIN enrollment e ON e.course_id = c.course_id;
 ```
 
-- ① Correct (student → enrollment → course order) (올바름)
-- ② Correct (different order is possible) (올바름 - 다른 순서도 가능)
-- ③ Only ① is correct (①만 올바름)
-- ④ Only ② is correct (②만 올바름)
+- ① Only ① is correct
+- ② Only ② is correct
+- ③ Both ① and ② are correct
+- ④ Both ① and ② are incorrect 
 
 ---
 
@@ -236,7 +236,7 @@ Submission: Screenshot showing 3-table JOIN result (제출: student, enrollment 
 |    1    |   ①   | INNER JOIN returns only rows matching both tables (양쪽 모두에 매칭되는 행만)                                               |
 |    2    |   ①   | ON specifies condition to connect two tables (두 테이블 연결 조건 지정)                                                     |
 |    3    |   ②   | Creates meaningful information by recombining normalized data (정규화된 데이터를 조합하여 의미 있는 정보 생성)              |
-|    4    |   ③   | Only ① is correct (student_id and course_id connection) (①만 올바름)                                                      |
+|    4    |   ①   | Only ① is correct (student_id and course_id connection) (①만 올바름)                                                      |
 |    5    |   ②   | ON at JOIN execution, WHERE filters after JOIN (ON은 JOIN 시점, WHERE는 이후 필터링)                                        |
 |    6    |   ②   | Duplication removed, so tables must recombine for meaningful information (정규화로 중복 제거했기에 JOIN으로 다시 조합 필요) |
 
