@@ -94,7 +94,7 @@ After completing Chapter 2, you should understand the following:
 - ① Correct (all constraints appropriate) (올바름 - 모든 제약조건 적절)
 - ② Correct (gpa as PRIMARY KEY) (올바름 - gpa가 PRIMARY KEY)
 - ③ Correct (NULL allowed for PRIMARY KEY) (올바름 - PRIMARY KEY에 NULL 가능)
-- ④ Only ① is correct (①만 올바름)
+- ④ ①②③ are correct 
 
 ---
 
