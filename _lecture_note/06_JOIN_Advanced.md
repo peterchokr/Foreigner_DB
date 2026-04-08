@@ -332,56 +332,33 @@ JOIN employees e2
 ON e1.dept_id = e2.dept_id
 WHERE e1.employee_id < e2.employee_id;
 
--- =====================================================
--- 6-6~6-10: CROSS JOIN, Multiple Table JOIN
--- =====================================================
-
 -- 6. CROSS JOIN (all combinations of departments and salary grades) (CROSS JOIN 부서와 급여등급의 모든 조합)
 SELECT d.department_name, s.grade
 FROM departments d
 CROSS JOIN salary_grades s
 ORDER BY d.department_name, s.grade;
 
--- 7. 3-table JOIN (employee, department, salary grade) (3개 테이블 JOIN 직원, 부서, 급여등급)
-SELECT e.employee_id, e.name, d.department_name, s.grade
-FROM employees e
-JOIN departments d
-ON e.dept_id = d.dept_id
-JOIN salary_grades s
-ON e.salary BETWEEN s.min_salary AND s.max_salary;
-
--- 8. LEFT JOIN chaining (employee, department, location) (LEFT JOIN 체이닝 직원, 부서, 위치)
+-- 7. LEFT JOIN chaining (employee, department, location) (LEFT JOIN 체이닝 직원, 부서, 위치)
 SELECT e.employee_id, e.name, d.department_name, d.location
 FROM employees e
 LEFT JOIN departments d
 ON e.dept_id = d.dept_id
 ORDER BY e.employee_id;
 
--- 9. JOIN + GROUP BY (count of employees per department) (JOIN + GROUP BY 부서별 직원 수)
-SELECT d.department_name, COUNT(e.employee_id) AS employee_count
-FROM employees e
-JOIN departments d
-ON e.dept_id = d.dept_id
-GROUP BY d.dept_id, d.department_name;
-
--- 10. JOIN + DISTINCT (remove duplicates) (JOIN + DISTINCT 중복 제거)
+-- 8. JOIN + DISTINCT (remove duplicates) (JOIN + DISTINCT 중복 제거)
 SELECT DISTINCT d.department_name
 FROM employees e
 JOIN departments d
 ON e.dept_id = d.dept_id;
 
--- =====================================================
--- 6-11~6-18: Advanced Functions (ORDER BY, LIMIT, CASE, aggregate functions, etc.)
--- =====================================================
-
--- 11. JOIN + ORDER BY (multiple column sorting) (JOIN + ORDER BY 다중 열 정렬)
+-- 9. JOIN + ORDER BY (multiple column sorting) (JOIN + ORDER BY 다중 열 정렬)
 SELECT e.name, d.department_name, e.salary
 FROM employees e
 JOIN departments d
 ON e.dept_id = d.dept_id
 ORDER BY d.department_name ASC, e.salary DESC;
 
--- 12. JOIN + LIMIT (top 5 rows) (JOIN + LIMIT 상위 5개 행)
+-- 10. JOIN + LIMIT (top 5 rows) (JOIN + LIMIT 상위 5개 행)
 SELECT e.name, e.salary, d.department_name
 FROM employees e
 JOIN departments d
@@ -389,28 +366,7 @@ ON e.dept_id = d.dept_id
 ORDER BY e.salary DESC
 LIMIT 5;
 
--- 13. JOIN + CASE statement (classify salary levels) (JOIN + CASE 문 급여 레벨 분류)
-SELECT e.name, d.department_name,
-       CASE 
-           WHEN e.salary >= 5000000 THEN 'High'
-           WHEN e.salary >= 4000000 THEN 'Medium'
-           ELSE 'Low'
-       END AS salary_level
-FROM employees e
-JOIN departments d
-ON e.dept_id = d.dept_id;
-
--- 14. JOIN + aggregate functions (department aggregates) (JOIN + 집계함수 부서별 집계)
-SELECT d.department_name, 
-       COUNT(e.employee_id) AS emp_count,
-       AVG(e.salary) AS avg_salary,
-       MAX(e.salary) AS max_salary
-FROM employees e
-JOIN departments d
-ON e.dept_id = d.dept_id
-GROUP BY d.dept_id, d.department_name;
-
--- 15. FULL OUTER JOIN (LEFT + RIGHT UNION) (FULL OUTER JOIN LEFT + RIGHT UNION)
+-- 11. FULL OUTER JOIN (LEFT + RIGHT UNION) (FULL OUTER JOIN LEFT + RIGHT UNION)
 SELECT COALESCE(e.employee_id, 0) AS emp_id,
        COALESCE(e.name, 'None') AS emp_name,
        COALESCE(d.department_name, 'None') AS dept_name
@@ -425,20 +381,20 @@ FROM employees e
 RIGHT JOIN departments d
 ON e.dept_id = d.dept_id;
 
--- 16. Self Join + range query (salary grade range) (Self Join + 범위 조회 급여등급 간 범위)
+-- 12. Self Join + range query (salary grade range) (Self Join + 범위 조회 급여등급 간 범위)
 SELECT s1.grade AS current_grade, s2.grade AS next_grade
 FROM salary_grades s1
 JOIN salary_grades s2
 ON s1.max_salary < s2.min_salary;
 
--- 17. JOIN + ORDER BY (multiple sorting) (JOIN + ORDER BY 다중 정렬)
+-- 13. JOIN + ORDER BY (multiple sorting) (JOIN + ORDER BY 다중 정렬)
 SELECT e.name, e.salary, d.department_name
 FROM employees e
 JOIN departments d
 ON e.dept_id = d.dept_id
 ORDER BY e.salary DESC, e.name ASC;
 
--- 18. JOIN + string function (CONCAT) (JOIN + 문자열 함수 CONCAT)
+-- 14. JOIN + string function (CONCAT) (JOIN + 문자열 함수 CONCAT)
 SELECT CONCAT(e.name, ' - ', d.department_name) AS employee_info,
        e.salary
 FROM employees e
@@ -463,14 +419,6 @@ Self Join의 개념을 설명하고, 직원과 관리자 관계, 범주 대분�
 **Assignment 3**: Explain how to implement FULL OUTER JOIN in MySQL and write implementation queries using LEFT JOIN, RIGHT JOIN, and UNION. Analyze situations where FULL OUTER JOIN is necessary.
 
 FULL OUTER JOIN을 MySQL에서 구현하는 방법을 설명하고, LEFT JOIN, RIGHT JOIN, UNION을 사용한 구현 쿼리를 작성하세요. FULL OUTER JOIN이 필요한 상황을 분석하세요.
-
-**Assignment 4**: Describe considerations when joining 3 or more tables. Discuss precautions when connecting multiple LEFT JOINs and methods for performance optimization.
-
-3개 이상의 테이블을 JOIN할 때 고려해야 할 사항들을 서술하세요. 여러 LEFT JOIN을 연결할 때의 주의사항과 성능 최적화 방법을 논의하세요.
-
-**Assignment 5**: Explain factors that affect JOIN performance (indexes, join order, join conditions) and present optimization methods for each. Also explain actual performance measurement methods.
-
-JOIN의 성능에 영향을 미치는 요소들(인덱스, 조인 순서, 조인 조건)을 설명하고, 각각의 최적화 방법을 제시하세요. 실제 성능 측정 방법도 설명하세요.
 
 **Submission Format**: Word or PDF document (2-3 pages)
 
