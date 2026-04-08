@@ -323,10 +323,6 @@ In this section, you will correctly use aggregate functions, combine GROUP BY an
 이 섹션에서는 집계함수의 올바른 사용법, GROUP BY와 HAVING의 조합, 실무에서 자주 사용되는 집계 패턴, NULL 처리 및 성능 최적화를 배웁니다.
 
 ```sql
--- =====================================================
--- 7-1~7-8: Basic Aggregate Functions (COUNT, SUM, AVG, MAX, MIN)
--- =====================================================
-
 -- 1. COUNT function basics (total number of sales) (COUNT 함수 기본 전체 판매 건수)
 SELECT COUNT(*) AS total_sales FROM sales;
 
@@ -352,10 +348,6 @@ SELECT MAX(unit_price) AS max_price FROM sales;
 
 -- 8. MAX and MIN combination (price range) (MAX와 MIN의 조합 단가 범위)
 SELECT MAX(unit_price) - MIN(unit_price) AS price_range FROM sales;
-
--- =====================================================
--- 7-9~7-16: GROUP BY and HAVING
--- =====================================================
 
 -- 9. GROUP BY basics (sales quantity by product) (GROUP BY 기본 상품별 판매 수량)
 SELECT product_id, SUM(quantity) AS total_qty
@@ -406,10 +398,6 @@ SELECT product_id,
 FROM sales
 GROUP BY product_id;
 
--- =====================================================
--- 7-17~7-25: Complex Aggregation and Advanced Features
--- =====================================================
-
 -- 17. Category statistics (product count, average price, max price) (카테고리별 통계 상품 개수, 평균 가격, 최대 가격)
 SELECT category, COUNT(*) AS product_count, 
        AVG(price) AS avg_price, MAX(price) AS max_price
@@ -424,52 +412,7 @@ SELECT employee_id,
 FROM sales
 GROUP BY employee_id;
 
--- 19. Daily aggregation (sales, transaction count, average unit price) (날짜별 집계 판매액, 건수, 평균 단가)
-SELECT DATE(sale_date) AS sale_date,
-       SUM(quantity * unit_price) AS daily_sales,
-       COUNT(*) AS transaction_count,
-       AVG(unit_price) AS avg_unit_price
-FROM sales
-GROUP BY DATE(sale_date);
 
--- 20. Complex aggregation (category, product, quantity, sales, average price) (복합 집계 카테고리, 상품별 판매량, 판매액, 평균 가격)
-SELECT p.category, p.product_id, p.product_name,
-       SUM(s.quantity) AS total_qty,
-       SUM(s.quantity * s.unit_price) AS total_sales,
-       AVG(s.unit_price) AS avg_unit_price
-FROM products p
-JOIN sales s ON p.product_id = s.product_id
-GROUP BY p.category, p.product_id, p.product_name;
-
--- 21. NULL handling (sum treating NULL as 0) (NULL 처리 NULL을 0으로 처리한 합계)
-SELECT SUM(IFNULL(stock, 0)) AS total_stock FROM products;
-
--- 22. CASE with aggregate functions (sales amount by category) (CASE와 집계함수 조합 판매액 범주별 개수)
-SELECT CASE 
-           WHEN quantity * unit_price >= 500000 THEN 'Large'
-           WHEN quantity * unit_price >= 300000 THEN 'Medium'
-           ELSE 'Small'
-       END AS sales_category,
-       COUNT(*) AS count
-FROM sales
-GROUP BY sales_category;
-
--- 23. Subtotals (WITH ROLLUP - category subtotals) (부분합 WITH ROLLUP - 카테고리별 소계)
-SELECT category, COUNT(*) AS product_count
-FROM products
-GROUP BY category
-WITH ROLLUP;
-
--- 24. Ranking (sales ranking in descending order) (순위 매기기 판매액 높은 순서대로 순위)
-SELECT product_id, SUM(quantity * unit_price) AS total_sales,
-       ROW_NUMBER() OVER (ORDER BY SUM(quantity * unit_price) DESC) AS ranking 
-FROM sales
-GROUP BY product_id;
-
--- 25. Ranking within groups (sales ranking per product) (그룹 내 랭킹 각 상품 내에서 판매 순위)
-SELECT product_id, sale_date, quantity * unit_price AS sales_amount,
-       ROW_NUMBER() OVER (PARTITION BY product_id ORDER BY quantity * unit_price DESC) AS product_rank
-FROM sales;
 ```
 
 ---
