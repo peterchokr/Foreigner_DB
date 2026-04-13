@@ -263,12 +263,6 @@ JOIN departments d ON e.dept_id = d.dept_id
 WHERE d.location = 'Seoul';
 ```
 
-**Performance Considerations (성능 고려사항):**
-
-- Generally JOIN is faster (일반적으로 JOIN이 더 빠름)
-- Consider readability when subquery is clearer (서브쿼리가 명확한 경우 가독성 우선 고려)
-- Actual performance depends on query optimizer (실제 성능은 쿼리 옵티마이저에 따라 다름)
-
 ---
 
 ### 8.9 WITH (CTE: Common Table Expression)
