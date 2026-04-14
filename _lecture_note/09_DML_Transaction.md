@@ -563,34 +563,22 @@ INSERT INTO employees (name, dept_id, salary) VALUES
 ('Jessica Anderson', 2, 4100000),
 ('Christopher Thomas', 1, 3700000);
 
--- 3. INSERT using subquery (data copy) (서브쿼리를 이용한 INSERT 데이터 복사)
-CREATE TABLE IF NOT EXISTS employee_archive AS 
-SELECT * FROM employees LIMIT 0;
-
-INSERT INTO employee_archive
-SELECT * FROM employees
-WHERE salary >= (SELECT AVG(salary) FROM employees WHERE dept_id = 1);
-
--- =====================================================
--- Section 2: UPDATE (Problems 4-8) (섹션 2: UPDATE 4-8번)
--- =====================================================
-
--- 4. Basic UPDATE (WHERE condition is mandatory!) (기본 UPDATE WHERE 조건 필수!)
+-- 3. Basic UPDATE (WHERE condition is mandatory!) (기본 UPDATE WHERE 조건 필수!)
 UPDATE employees
 SET salary = 5200000
 WHERE employee_id = 1;
 
--- 5. UPDATE multiple columns simultaneously (여러 열을 동시에 UPDATE)
+-- 4. UPDATE multiple columns simultaneously (여러 열을 동시에 UPDATE)
 UPDATE employees
 SET salary = 5500000, dept_id = 2
 WHERE employee_id = 2;
 
--- 6. UPDATE using expression (based on current value) (수식을 사용한 UPDATE 현재값 기반 계산)
+-- 5. UPDATE using expression (based on current value) (수식을 사용한 UPDATE 현재값 기반 계산)
 UPDATE employees
 SET salary = salary * 1.1
 WHERE dept_id = 1;
 
--- 7. Conditional UPDATE using CASE (different raise by department) (CASE를 사용한 조건부 UPDATE 부서별 다른 인상률)
+-- 6. Conditional UPDATE using CASE (different raise by department) (CASE를 사용한 조건부 UPDATE 부서별 다른 인상률)
 UPDATE employees
 SET salary = CASE 
     WHEN dept_id = 1 THEN salary * 1.15
@@ -598,7 +586,7 @@ SET salary = CASE
     ELSE salary * 1.10
 END;
 
--- 8. Safe UPDATE procedure (verify with SELECT first) (안전한 UPDATE 절차 먼저 SELECT로 확인)
+-- 7. Safe UPDATE procedure (verify with SELECT first) (안전한 UPDATE 절차 먼저 SELECT로 확인)
 -- Step 1: Verify (단계 1: 확인)
 SELECT * FROM employees WHERE dept_id = 2;
 -- Step 2: Execute UPDATE (단계 2: UPDATE 실행)
@@ -606,25 +594,17 @@ UPDATE employees
 SET salary = salary * 1.05
 WHERE dept_id = 2;
 
--- =====================================================
--- Section 3: DELETE (Problems 9-10) (섹션 3: DELETE 9-10번)
--- =====================================================
-
--- 9. Basic DELETE (WHERE condition is mandatory!) (기본 DELETE WHERE 조건 필수!)
+-- 8. Basic DELETE (WHERE condition is mandatory!) (기본 DELETE WHERE 조건 필수!)
 DELETE FROM employees
 WHERE employee_id = 7;
 
--- 10. Safe DELETE procedure (verify with SELECT first) (안전한 DELETE 절차 먼저 SELECT로 확인)
+-- 9. Safe DELETE procedure (verify with SELECT first) (안전한 DELETE 절차 먼저 SELECT로 확인)
 -- Step 1: Verify data to be deleted (단계 1: 삭제될 데이터 확인)
 SELECT * FROM employees WHERE salary < 3600000;
 -- Step 2: Execute DELETE (단계 2: DELETE 실행)
 DELETE FROM employees WHERE salary < 3600000;
 
--- =====================================================
--- Section 4: Transaction Basics (Problems 11-13) (섹션 4: 트랜잭션 기본 11-13번)
--- =====================================================
-
--- 11. Simple transaction - COMMIT (save all) (간단한 트랜잭션 - COMMIT 모두 저장)
+-- 10. Simple transaction - COMMIT (save all) (간단한 트랜잭션 - COMMIT 모두 저장)
 START TRANSACTION;
   INSERT INTO employees (name, dept_id, salary) 
   VALUES ('Nicole Martinez', 1, 4300000);
@@ -633,13 +613,13 @@ START TRANSACTION;
   WHERE dept_id = 1;
 COMMIT;
 
--- 12. Transaction - ROLLBACK (cancel all) (트랜잭션 - ROLLBACK 모두 취소)
+-- 11. Transaction - ROLLBACK (cancel all) (트랜잭션 - ROLLBACK 모두 취소)
 START TRANSACTION;
   INSERT INTO employees (name, dept_id, salary) 
   VALUES ('Kevin Jackson', 2, 4400000);
 ROLLBACK;
 
--- 13. Bank transfer simulation (importance of transaction) (은행 송금 시뮬레이션 트랜잭션의 중요성)
+-- 12. Bank transfer simulation (importance of transaction) (은행 송금 시뮬레이션 트랜잭션의 중요성)
 INSERT INTO accounts VALUES
 (1001, 'Account of Alex Johnson', 1000000),
 (1002, 'Account of Sarah Williams', 500000);
@@ -649,11 +629,7 @@ START TRANSACTION;
   UPDATE accounts SET balance = balance + 100000 WHERE account_id = 1002;
 COMMIT;
 
--- =====================================================
--- Section 5: Advanced Transaction and SAVEPOINT (Problems 14-16) (섹션 5: 고급 트랜잭션 및 SAVEPOINT 14-16번)
--- =====================================================
-
--- 14. SAVEPOINT - partial rollback (부분 롤백)
+-- 13. SAVEPOINT - partial rollback (부분 롤백)
 START TRANSACTION;
   INSERT INTO employees (name, dept_id, salary) 
   VALUES ('Lisa White', 1, 4100000);
@@ -670,49 +646,6 @@ START TRANSACTION;
   
 COMMIT;
 
--- 15. Data validation before INSERT (데이터 검증 후 INSERT)
-INSERT INTO employees (name, dept_id, salary)
-SELECT 'New Employee', 1, 4100000
-WHERE NOT EXISTS (SELECT 1 FROM employees WHERE name = 'New Employee');
-
--- 16. INSERT IGNORE (continue on error with warning) (INSERT IGNORE 에러가 발생해도 작업을 중단하지 말고 경고만 발생하고 넘어가라)
-INSERT IGNORE INTO employees (employee_id, name, dept_id, salary)
-VALUES (1, 'Alex Johnson', 1, 5000000);
-
--- =====================================================
--- Section 6: Real-world Practice (Problems 17-20) (섹션 6: 실무 활용 17-20번)
--- =====================================================
-
--- 17. Data migration (protected by transaction) (데이터 마이그레이션 트랜잭션으로 보호)
-START TRANSACTION;
-  INSERT INTO employee_archive 
-  SELECT * FROM employees WHERE employee_id >= 10;
-  
-  DELETE FROM employees WHERE employee_id >= 10;
-  
-COMMIT;
-
--- 18. Row locking (SELECT FOR UPDATE - concurrency control) (행 잠금 SELECT FOR UPDATE - 동시성 제어)
--- Write lock - declare that I will modify this data, don't touch it until I finish (쓰기 잠금 내가 이 데이터를 수정할 거니까, 내가 끝낼 때까지 아무도 손대지 마라고 선언)
-START TRANSACTION;
-  SELECT * FROM employees WHERE employee_id = 1 FOR UPDATE;
-  UPDATE employees SET salary = 5500000 WHERE employee_id = 1;
-COMMIT;
-
--- 19. Validation before change (best practice) (변경 전 검증 베스트 프랙티스)
-SELECT * FROM employees WHERE dept_id = 1 AND salary < 4000000;
-
-START TRANSACTION;
-  UPDATE employees 
-  SET salary = salary * 1.15
-  WHERE dept_id = 1 AND salary < 4000000;
-COMMIT;
-
--- 20. TRUNCATE vs DELETE comparison (DELETE supports transaction rollback) (TRUNCATE vs DELETE 비교 DELETE는 트랜잭션 보호 가능)
-START TRANSACTION;
-  DELETE FROM employees WHERE dept_id = 4;
-COMMIT;
--- TRUNCATE TABLE employees;  -- Delete all rows (rollback not possible!) (모든 행 삭제 롤백 불가!)
 ```
 
 ---
