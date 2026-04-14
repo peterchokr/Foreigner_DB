@@ -141,7 +141,7 @@ INSERT INTO enrollment VALUES
 
 ---
 
-## 💻 Part 3: Hands-on Practice (30 Problems)
+## 💻 Part 3: Hands-on Practice (11 Problems)
 
 ### What You'll Learn in This Section
 
