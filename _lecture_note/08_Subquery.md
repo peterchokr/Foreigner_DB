@@ -344,7 +344,7 @@ CREATE TABLE orders (
 
 ---
 
-## 💻 Part 3: Hands-on Practice (20 Problems)
+## 💻 Part 3: Hands-on Practice (17 Problems)
 
 ### What You'll Learn in This Section
 
@@ -353,9 +353,6 @@ In this section, you will write and execute various forms of subqueries you lear
 이 섹션에서는 배운 서브쿼리의 다양한 형태를 실제로 작성하고 실행합니다. 기본 단일 행 서브쿼리부터 시작하여, 다중 행 서브쿼리, 스칼라 서브쿼리, 상관 서브쿼리, EXISTS, WITH (CTE)까지 실무에서 필요한 서브쿼리 능력을 기르게 됩니다.
 
 ```sql
--- =====================================================
--- 8-1~8-6: Single-row and Multi-row Subqueries
--- =====================================================
 
 -- 1. Single-row subquery - MAX (employee with highest salary) (단일 행 서브쿼리 최대값 최고 급여 직원)
 SELECT * FROM employees
@@ -381,10 +378,6 @@ WHERE salary NOT IN (SELECT salary FROM employees WHERE dept_id = 1);
 SELECT name, salary, dept_id FROM employees
 WHERE salary > ANY (SELECT AVG(salary) FROM employees GROUP BY dept_id);
 
--- =====================================================
--- 8-7~8-10: Scalar Subqueries and Inline Views
--- =====================================================
-
 -- 7. Scalar subquery (each employee's dept average salary) (스칼라 서브쿼리 각 직원의 부서 평균 급여)
 SELECT name, salary,
        (SELECT AVG(salary) FROM employees e2 WHERE e2.dept_id = e1.dept_id) AS dept_avg
@@ -409,60 +402,34 @@ SELECT * FROM (
 ) AS sorted_emp
 WHERE salary > 4000000;
 
--- =====================================================
--- 8-11~8-14: Correlated Subqueries and EXISTS
--- =====================================================
-
--- 11. Correlated subquery - comparison (compare with dept average) (상관 서브쿼리 비교 부서 평균과 비교)
-SELECT name, salary,
-       CASE WHEN salary > (SELECT AVG(salary) FROM employees e2 WHERE e2.dept_id = e1.dept_id)
-            THEN 'Above Average' ELSE 'Below Average' END AS salary_level
-FROM employees e1;
-
--- 12. Correlated subquery - COUNT (number of employees in same dept) (상관 서브쿼리 COUNT 같은 부서 직원 수)
+-- 11. Correlated subquery - COUNT (number of employees in same dept) (상관 서브쿼리 COUNT 같은 부서 직원 수)
 SELECT name,
        (SELECT COUNT(*) FROM employees e2 WHERE e2.dept_id = e1.dept_id) AS dept_count
 FROM employees e1;
 
--- 13. EXISTS basics (customers with orders) (EXISTS 기본 주문이 있는 고객)
+-- 12. EXISTS basics (customers with orders) (EXISTS 기본 주문이 있는 고객)
 SELECT customer_id FROM customers c
 WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id);
 
--- 14. NOT EXISTS (customers without orders) (NOT EXISTS 주문이 없는 고객)
-SELECT customer_id FROM customers c
-WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id);
-
--- =====================================================
--- 8-15~8-20: Nested Queries, Comparisons, and Advanced Subqueries
--- =====================================================
-
--- 15. Subquery vs JOIN (employees in Seoul dept) (서브쿼리 vs JOIN 서울 부서 직원)
+-- 13. Subquery vs JOIN (employees in Seoul dept) (서브쿼리 vs JOIN 서울 부서 직원)
 SELECT name FROM employees
 WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = 'Seoul');
 
--- 16. Nested subquery (salary higher than Seoul dept average) (중첩 서브쿼리 서울 부서 평균보다 높은 급여)
+-- 14. Nested subquery (salary higher than Seoul dept average) (중첩 서브쿼리 서울 부서 평균보다 높은 급여)
 SELECT name FROM employees
 WHERE salary > (SELECT AVG(salary) FROM employees
                 WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = 'Seoul'));
 
--- 17. Aggregate functions with subquery (statistics query) (집계함수와 서브쿼리 통계 조회)
+-- 15. Aggregate functions with subquery (statistics query) (집계함수와 서브쿼리 통계 조회)
 SELECT (SELECT COUNT(*) FROM employees) AS total_emp,
        (SELECT AVG(salary) FROM employees) AS avg_salary,
        (SELECT MAX(salary) FROM employees) AS max_salary;
 
--- 18. Dynamic WHERE with subquery (same dept as Kim Chulsu) (서브쿼리 동적 WHERE 김철수와 같은 부서)
+-- 16. Dynamic WHERE with subquery (same dept as Kim Chulsu) (서브쿼리 동적 WHERE 김철수와 같은 부서)
 SELECT * FROM employees
 WHERE dept_id = (SELECT dept_id FROM employees WHERE name = 'Kim Chulsu');
 
--- 19. WITH (CTE) - dept average (부서별 평균)
-WITH dept_avg AS (
-    SELECT dept_id, AVG(salary) AS avg_salary FROM employees GROUP BY dept_id
-)
-SELECT e.name, e.salary, d.avg_salary
-FROM employees e
-JOIN dept_avg d ON e.dept_id = d.dept_id;
-
--- 20. Subquery - ranking (calculate row-by-row ranking) (서브쿼리 순위 매기기 행별 순위 계산)
+-- 17. Subquery - ranking (calculate row-by-row ranking) (서브쿼리 순위 매기기 행별 순위 계산)
 SELECT name, salary,
        (SELECT COUNT(*) FROM employees e2 WHERE e2.salary > e1.salary) + 1 AS ranking
 FROM employees e1;
