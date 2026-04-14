@@ -161,7 +161,7 @@ WHERE condition;
 
 **⚠️ Very Important Warning! (매우 중요한 경고!)**
 
-Without a WHERE condition, all rows will be permanently deleted!
+Without a WHERE condition, all rows will be permanently deleted!   
 WHERE 조건이 없으면 모든 행이 영구적으로 삭제됩니다!
 
 ```sql
