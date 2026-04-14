@@ -67,7 +67,6 @@ INSERT INTO employees (name, dept_id, salary) VALUES
 
 - Much faster than individual INSERT statements (개별 INSERT 문보다 훨씬 빠름)
 - Reduced network traffic (네트워크 트래픽 감소)
-- Processed as a single transaction for safety (단일 트랜잭션으로 처리되어 안전함)
 
 **INSERT Using Subquery (Data Copying) (서브쿼리를 이용한 INSERT 데이터 복사):**
 
@@ -82,7 +81,6 @@ WHERE dept_id = 1;
 
 - Back up data before major changes (주요 변경 전 데이터 백업)
 - Copy old data to archive table (오래된 데이터를 아카이브 테이블로 복사)
-- Data migration (데이터 마이그레이션)
 - Generate test data from real data (실제 데이터로부터 테스트 데이터 생성)
 
 ---
