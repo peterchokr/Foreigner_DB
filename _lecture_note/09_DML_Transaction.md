@@ -182,12 +182,6 @@ SELECT * FROM employees WHERE salary < 3500000;
 -- Step 2: Execute DELETE if result is correct (단계 2: 결과가 맞으면 DELETE 실행)
 DELETE FROM employees WHERE salary < 3500000;
 
--- Step 3: Safest method - Use transaction (단계 3: 가장 안전한 방법 - 트랜잭션 사용)
-START TRANSACTION;
-DELETE FROM employees WHERE salary < 3500000;
--- Verify result then
-COMMIT;  -- Confirm deletion or (삭제 확정 또는)
-ROLLBACK;  -- Cancel and restore (취소하고 원상복구)
 ```
 
 **DELETE vs TRUNCATE Comparison (DELETE vs TRUNCATE 비교):**
