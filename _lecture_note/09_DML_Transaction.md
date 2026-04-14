@@ -270,7 +270,46 @@ ROLLBACK;
 
 ---
 
-### 9.5 ACID Properties
+### 9.5 COMMIT and ROLLBACK
+
+**COMMIT (COMMIT):**
+
+**Role**: Permanently save all changes of a transaction (역할: 트랜잭션의 모든 변경사항을 영구적으로 저장)
+
+```sql
+START TRANSACTION;
+  UPDATE employees SET salary = 5000000 WHERE employee_id = 1;
+  -- At this point, changes are visible only in my session (이 시점에서는 나 자신의 세션에서만 변경사항을 볼 수 있음)
+  
+COMMIT;  -- Now everyone can see the changes (이제 모든 사람이 변경사항을 볼 수 있음)
+```
+
+**ROLLBACK (ROLLBACK):**
+
+**Role**: Cancel all changes of a transaction and restore to previous state (역할: 트랜잭션의 모든 변경사항을 취소하고 이전 상태로 복원)
+
+```sql
+START TRANSACTION;
+  INSERT INTO employees VALUES (10, 'New Employee', 1, 3500000);
+  -- New employee is added (temporary) (새 직원이 추가됨 임시)
+  
+  -- Problem found! Wrong information! (문제 발견! 잘못된 정보다!)
+  
+ROLLBACK;  -- Insertion is cancelled, employee is not created (삽입이 취소됨, 직원이 생성되지 않음)
+```
+
+**Practical Use Cases (실제 사용 사례):**
+
+```sql
+START TRANSACTION;
+  UPDATE employees SET salary = 5500000 WHERE employee_id = 1;
+  UPDATE employees SET dept_id = 2 WHERE employee_id = 1;
+COMMIT;  -- Both changes are saved ✅ (두 변경사항이 모두 저장됨 ✅)
+```
+
+---
+
+### 9.6 ACID Properties
 
 Four essential characteristics that guarantee transaction safety. (트랜잭션의 안전성을 보장하는 네 가지 핵심 특성입니다.)
 
@@ -410,44 +449,6 @@ Disk (non-volatile) ← Permanently saved! (영구 저장됨!)
 
 ---
 
-### 9.6 COMMIT and ROLLBACK
-
-**COMMIT (COMMIT):**
-
-**Role**: Permanently save all changes of a transaction (역할: 트랜잭션의 모든 변경사항을 영구적으로 저장)
-
-```sql
-START TRANSACTION;
-  UPDATE employees SET salary = 5000000 WHERE employee_id = 1;
-  -- At this point, changes are visible only in my session (이 시점에서는 나 자신의 세션에서만 변경사항을 볼 수 있음)
-  
-COMMIT;  -- Now everyone can see the changes (이제 모든 사람이 변경사항을 볼 수 있음)
-```
-
-**ROLLBACK (ROLLBACK):**
-
-**Role**: Cancel all changes of a transaction and restore to previous state (역할: 트랜잭션의 모든 변경사항을 취소하고 이전 상태로 복원)
-
-```sql
-START TRANSACTION;
-  INSERT INTO employees VALUES (10, 'New Employee', 1, 3500000);
-  -- New employee is added (temporary) (새 직원이 추가됨 임시)
-  
-  -- Problem found! Wrong information! (문제 발견! 잘못된 정보다!)
-  
-ROLLBACK;  -- Insertion is cancelled, employee is not created (삽입이 취소됨, 직원이 생성되지 않음)
-```
-
-**Practical Use Cases (실제 사용 사례):**
-
-```sql
-START TRANSACTION;
-  UPDATE employees SET salary = 5500000 WHERE employee_id = 1;
-  UPDATE employees SET dept_id = 2 WHERE employee_id = 1;
-COMMIT;  -- Both changes are saved ✅ (두 변경사항이 모두 저장됨 ✅)
-```
-
----
 
 ### 9.7 SAVEPOINT (Partial Rollback)
 
