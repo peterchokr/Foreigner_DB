@@ -122,11 +122,6 @@ SELECT * FROM employees WHERE dept_id = 1;
 UPDATE employees 
 SET salary = salary * 1.1  -- 10% increase (10% 인상)
 WHERE dept_id = 1;
-
--- Step 3: Use transaction for safer approach (단계 3: 트랜잭션을 사용하면 더 안전함)
-START TRANSACTION;
-UPDATE employees SET salary = salary * 1.1 WHERE dept_id = 1;
-COMMIT;  -- Or ROLLBACK (또는 ROLLBACK)
 ```
 
 **UPDATE Using Expression (수식을 사용한 UPDATE):**
