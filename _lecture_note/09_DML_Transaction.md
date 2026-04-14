@@ -549,9 +549,6 @@ CREATE TABLE accounts (
 In this section, you will practice safely using INSERT, UPDATE, DELETE, and ensuring data integrity through transactions. (이 섹션에서는 INSERT, UPDATE, DELETE를 안전하게 사용하고, 트랜잭션을 통해 데이터 무결성을 보장하는 다양한 기법을 실습합니다.)
 
 ```sql
--- =====================================================
--- Section 1: INSERT (Problems 1-3) (섹션 1: INSERT 1-3번)
--- =====================================================
 
 -- 1. Basic INSERT (safe method - specify column names) (기본 INSERT 안전한 방법 - 열 이름 명시)
 INSERT INTO employees (name, dept_id, salary)
