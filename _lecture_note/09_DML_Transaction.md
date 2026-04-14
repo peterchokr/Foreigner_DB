@@ -99,7 +99,7 @@ WHERE condition;
 
 **⚠️ Critical Warning! (치명적인 경고!)**
 
-Always include a WHERE condition. Without it, all rows will be modified!
+Always include a WHERE condition. Without it, all rows will be modified!   
 WHERE 조건을 반드시 포함하세요. 없으면 모든 행이 수정됩니다!
 
 ```sql
