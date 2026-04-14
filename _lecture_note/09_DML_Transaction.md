@@ -226,7 +226,7 @@ WHERE account_id = 1002;
 - Account 1: 100,000 deducted ✅ (completed)
 - Account 2: unchanged (deposit not made) ❌
 - Result: 100,000 disappears! (very big problem!)
- 
+    
 - 계좌 1: 100,000원 차감됨 ✅ (완료됨)
 - 계좌 2: 그대로 (입금 안 됨) ❌
 - 결과: 100,000원이 사라짐! (매우 큰 문제!)
