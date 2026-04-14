@@ -204,7 +204,7 @@ A transaction groups multiple SQL operations into a single logical unit. (트랜
 
 Let's think about a bank transfer in a real banking system. (실제 은행 시스템에서 계좌 송금을 생각해봅시다.)
 
-**❌ Problem Situation (Without Transaction) (문제 상황 트랜잭션 없이):**
+**❌ Problem Situation (Without Transaction) (문제 상황. 트랜잭션 없이):**
 
 ```sql
 -- Withdraw 100,000 from account 1 (계좌 1에서 100,000원 출금)
