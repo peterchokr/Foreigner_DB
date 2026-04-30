@@ -171,16 +171,6 @@ DELETE FROM employees WHERE salary < 3500000;
 
 ```
 
-**DELETE vs TRUNCATE Comparison (DELETE vs TRUNCATE 비교):**
-
-| Feature           | DELETE                  | TRUNCATE         |
-| ----------------- | ----------------------- | ---------------- |
-| WHERE condition   | ✅ Supported            | ❌ Not supported |
-| Rollback possible | ✅ Yes (in transaction) | ❌ No            |
-| Speed             | Slow                    | Very fast        |
-| When to use       | Selective deletion      | Delete all rows  |
-| Table structure   | Maintained              | Maintained       |
-
 ---
 
 ### 9.4 Transaction Concept
