@@ -151,65 +151,7 @@ FROM employees e;
 
 ---
 
-### 8.5 Inline View
-
-An inline view is a subquery used in the FROM clause.
-
-인라인 뷰는 FROM 절에 사용되는 서브쿼리입니다.
-
-**Syntax (문법):**
-
-```sql
-SELECT * FROM (
-  SELECT column FROM table_name WHERE condition
-) AS alias_name;
-```
-
-**Characteristics (특징):**
-
-- Works like a temporary table (임시 테이블처럼 동작)
-- Alias is required (별칭 필수)
-- Processes complex queries step-by-step (복잡한 쿼리를 단계적으로 처리)
-
-**Example (예시):**
-
-```sql
--- Get average salary by department, then find employees above average (부서별 평균 급여를 구한 후, 평균 이상의 직원을 찾기)
-SELECT e.name, dept_avg.avg_salary
-FROM employees e
-JOIN (SELECT dept_id, AVG(salary) AS avg_salary 
-      FROM employees GROUP BY dept_id) AS dept_avg
-ON e.dept_id = dept_avg.dept_id
-WHERE e.salary >= dept_avg.avg_salary;
-```
-
----
-
-### 8.6 Correlated Subquery
-
-A correlated subquery references values from the outer query.
-
-상관 서브쿼리는 외부 쿼리의 값을 참조하는 서브쿼리입니다.
-
-**Characteristics (특징):**
-
-- Subquery executes for each row of outer query (외부 쿼리의 각 행에 대해 서브쿼리가 실행)
-- Performance may degrade (성능이 저하될 수 있음)
-- Logic can be complex (로직이 복잡할 수 있음)
-
-**Example (예시):**
-
-```sql
--- Check if each employee salary is higher than department average (각 직원의 급여가 같은 부서의 평균 급여보다 높은지 확인)
-SELECT name, salary
-FROM employees e1
-WHERE salary > (SELECT AVG(salary) FROM employees e2 
-                WHERE e2.dept_id = e1.dept_id);
-```
-
----
-
-### 8.7 EXISTS and NOT EXISTS
+### 8.5 EXISTS and NOT EXISTS
 
 EXISTS checks if a subquery returns any rows.
 
@@ -242,30 +184,8 @@ WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id);
 
 ---
 
-### 8.8 Subquery vs JOIN
 
-The same result can be achieved with either a subquery or a JOIN.
-
-동일한 결과를 서브쿼리와 JOIN으로 구현할 수 있습니다.
-
-**Subquery (서브쿼리):**
-
-```sql
-SELECT * FROM employees
-WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = 'Seoul');
-```
-
-**JOIN:**
-
-```sql
-SELECT e.* FROM employees e
-JOIN departments d ON e.dept_id = d.dept_id
-WHERE d.location = 'Seoul';
-```
-
----
-
-### 8.9 WITH (CTE: Common Table Expression)
+### 8.6 WITH (CTE: Common Table Expression)
 
 WITH allows you to write complex queries with better readability using Common Table Expressions.
 
@@ -388,51 +308,24 @@ SELECT name,
        (SELECT department_name FROM departments WHERE dept_id = e.dept_id) AS dept_name
 FROM employees e;
 
--- 9. Inline view - basics (dept average salary, 4000000 or more) (인라인 뷰 기본 부서별 평균 급여 400만 이상)
-SELECT dept_id, dept_avg FROM (
-    SELECT dept_id, AVG(salary) AS dept_avg
-    FROM employees
-    GROUP BY dept_id
-) AS dept_salary
-WHERE dept_avg > 4000000;
-
--- 10. Inline view - sort and filter (high salary first, >4000000) (인라인 뷰 정렬 및 필터링 급여 높은 순 400만 이상)
-SELECT * FROM (
-    SELECT name, salary FROM employees ORDER BY salary DESC
-) AS sorted_emp
-WHERE salary > 4000000;
-
--- 11. Correlated subquery - COUNT (number of employees in same dept) (상관 서브쿼리 COUNT 같은 부서 직원 수)
-SELECT name,
-       (SELECT COUNT(*) FROM employees e2 WHERE e2.dept_id = e1.dept_id) AS dept_count
-FROM employees e1;
-
--- 12. EXISTS basics (customers with orders) (EXISTS 기본 주문이 있는 고객)
+-- 9. EXISTS basics (customers with orders) (EXISTS 기본 주문이 있는 고객)
 SELECT customer_id FROM customers c
 WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id);
 
--- 13. Subquery vs JOIN (employees in Seoul dept) (서브쿼리 vs JOIN 서울 부서 직원)
-SELECT name FROM employees
-WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = 'Seoul');
-
--- 14. Nested subquery (salary higher than Seoul dept average) (중첩 서브쿼리 서울 부서 평균보다 높은 급여)
+-- 10. Nested subquery (salary higher than Seoul dept average) (중첩 서브쿼리 서울 부서 평균보다 높은 급여)
 SELECT name FROM employees
 WHERE salary > (SELECT AVG(salary) FROM employees
                 WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = 'Seoul'));
 
--- 15. Aggregate functions with subquery (statistics query) (집계함수와 서브쿼리 통계 조회)
+-- 11. Aggregate functions with subquery (statistics query) (집계함수와 서브쿼리 통계 조회)
 SELECT (SELECT COUNT(*) FROM employees) AS total_emp,
        (SELECT AVG(salary) FROM employees) AS avg_salary,
        (SELECT MAX(salary) FROM employees) AS max_salary;
 
--- 16. Dynamic WHERE with subquery (same dept as Kim Chulsu) (서브쿼리 동적 WHERE 김철수와 같은 부서)
+-- 12. Dynamic WHERE with subquery (same dept as Kim Chulsu) (서브쿼리 동적 WHERE 김철수와 같은 부서)
 SELECT * FROM employees
 WHERE dept_id = (SELECT dept_id FROM employees WHERE name = 'Kim Chulsu');
 
--- 17. Subquery - ranking (calculate row-by-row ranking) (서브쿼리 순위 매기기 행별 순위 계산)
-SELECT name, salary,
-       (SELECT COUNT(*) FROM employees e2 WHERE e2.salary > e1.salary) + 1 AS ranking
-FROM employees e1;
 ```
 
 ---
