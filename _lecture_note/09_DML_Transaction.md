@@ -360,7 +360,7 @@ If isolation is not guaranteed, the following accidents can occur. (고립성이
 - Data evaporation: when two people click edit simultaneously on a post, only the later person's content remains and the first person's work disappears.
   (데이터 증발: 두 명이 동시에 게시글 수정 버튼을 눌렀을 때, 나중에 저장한 사람의 내용만 남고 앞사람의 작업은 사라지는 상황)
 
-**Solution (격리성으로 보호) (Protection with Isolation):**
+**Solution (Protection with Isolation): (격리성으로 보호)**
 
 ```
 Session A                          Session B
