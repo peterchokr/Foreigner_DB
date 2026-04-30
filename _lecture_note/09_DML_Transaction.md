@@ -184,28 +184,28 @@ Let's think about a bank transfer in a real banking system. (실제 은행 시�
 **❌ Problem Situation (Without Transaction) (문제 상황. 트랜잭션 없이):**
 
 ```sql
--- Withdraw 100,000 from account 1 (계좌 1에서 100,000원 출금)
-UPDATE accounts SET balance = balance - 100000 
+-- Withdraw $100 from account 1 (계좌 1에서 $100 출금)
+UPDATE accounts SET balance = balance - 100 
 WHERE account_id = 1001;  
 -- ✅ Success! (성공!)
 
 -- System crashes here! 😱 (여기서 갑자기 시스템이 다운됨!)
 -- Server down, database connection lost, power cut, etc.
 
--- Deposit 100,000 to account 2 (not executed) (계좌 2에 100,000원 입금 실행 안 됨)
-UPDATE accounts SET balance = balance + 100000 
+-- Deposit $100 to account 2 (not executed) (계좌 2에 $100 입금 실행 안 됨)
+UPDATE accounts SET balance = balance + 100 
 WHERE account_id = 1002;  
 -- ❌ Not executed (실행되지 않음)
 ```
 
 **What Happens to the Results? (결과가 어떻게 되는가?)**
 
-- Account 1: 100,000 deducted ✅ (completed)
+- Account 1: $100 deducted ✅ (completed)
 - Account 2: unchanged (deposit not made) ❌
-- Result: 100,000 disappears! (very big problem!)
-- 계좌 1: 100,000원 차감됨 ✅ (완료됨)
+- Result: $100 disappears! (very big problem!)
+- 계좌 1: $100 차감됨 ✅ (완료됨)
 - 계좌 2: 그대로 (입금 안 됨) ❌
-- 결과: 100,000원이 사라짐! (매우 큰 문제!)
+- 결과: $100 사라짐! (매우 큰 문제!)
 
 **Bank is ruined** 😞
 
@@ -216,11 +216,11 @@ WHERE account_id = 1002;
 START TRANSACTION;
 
   -- Withdraw from account 1 (계좌 1에서 출금)
-  UPDATE accounts SET balance = balance - 100000 
+  UPDATE accounts SET balance = balance - 100 
   WHERE account_id = 1001;
   
   -- Deposit to account 2 (계좌 2에 입금)
-  UPDATE accounts SET balance = balance + 100000 
+  UPDATE accounts SET balance = balance + 100 
   WHERE account_id = 1002;
 
 -- If both succeed, confirm (둘 다 성공했으면 확정)
@@ -255,7 +255,7 @@ ROLLBACK;
 
 ```sql
 START TRANSACTION;
-  UPDATE employees SET salary = 5000000 WHERE employee_id = 1;
+  UPDATE employees SET salary = 500 WHERE employee_id = 1;
   -- At this point, changes are visible only in my session (이 시점에서는 나 자신의 세션에서만 변경사항을 볼 수 있음)
   
 COMMIT;  -- Now everyone can see the changes (이제 모든 사람이 변경사항을 볼 수 있음)
@@ -267,7 +267,7 @@ COMMIT;  -- Now everyone can see the changes (이제 모든 사람이 변경사�
 
 ```sql
 START TRANSACTION;
-  INSERT INTO employees VALUES (10, 'New Employee', 1, 3500000);
+  INSERT INTO employees VALUES (10, 'New Employee', 1, 350);
   -- New employee is added (temporary) (새 직원이 추가됨 임시)
   
   -- Problem found! Wrong information! (문제 발견! 잘못된 정보다!)
@@ -279,7 +279,7 @@ ROLLBACK;  -- Insertion is cancelled, employee is not created (삽입이 취소�
 
 ```sql
 START TRANSACTION;
-  UPDATE employees SET salary = 5500000 WHERE employee_id = 1;
+  UPDATE employees SET salary = 550 WHERE employee_id = 1;
   UPDATE employees SET dept_id = 2 WHERE employee_id = 1;
 COMMIT;  -- Both changes are saved ✅ (두 변경사항이 모두 저장됨 ✅)
 ```
@@ -299,8 +299,8 @@ Four essential characteristics that guarantee transaction safety. (트랜잭션�
 
 ```sql
 START TRANSACTION;
-  UPDATE accounts SET balance = balance - 100000 WHERE id = 1001;  -- ✅ Success
-  UPDATE accounts SET balance = balance + 100000 WHERE id = 1002;  -- ❌ Fail!
+  UPDATE accounts SET balance = balance - 100 WHERE id = 1001;  -- ✅ Success
+  UPDATE accounts SET balance = balance + 100 WHERE id = 1002;  -- ❌ Fail!
 
 COMMIT;  -- First is saved, second is not → Data mismatch! (첫 번째만 저장되고 두 번째는 안 됨 → 데이터 불일치!)
 ```
@@ -332,8 +332,8 @@ Bank rule: Sum of all account balances = Bank reserves
 
 ```sql
 START TRANSACTION;
-  UPDATE accounts SET balance = balance - 100000 WHERE id = 1001;  -- -100,000
-  UPDATE accounts SET balance = balance + 100000 WHERE id = 1002;  -- +100,000
+  UPDATE accounts SET balance = balance - 100 WHERE id = 1001;  -- -1000
+  UPDATE accounts SET balance = balance + 100 WHERE id = 1002;  -- +100
 COMMIT;
 
 -- Result: Total balance unchanged! ✅ Consistency maintained (총 잔액은 변하지 않음! ✅ 일관성 유지됨)
@@ -355,8 +355,8 @@ COMMIT;
 
 If isolation is not guaranteed, the following accidents can occur. (고립성이 보장되지 않는다면 다음과 같은 사고가 발생할 수 있다)
 
-- Double withdrawal: balance is 100,000 dollar but two places withdraw 100,000 dollar simultaneously, resulting in negative balance.
-  (이중 출금: 잔액이 10만원인데 동시에 두 곳에서 10만원씩 출금되어 잔액이 마이너스가 되는 상황)
+- Double withdrawal: balance is 100 dollar but two places withdraw 100 dollar simultaneously, resulting in negative balance.
+  (이중 출금: 잔액이 $100인데 동시에 두 곳에서 $100씩 출금되어 잔액이 마이너스가 되는 상황)
 - Data evaporation: when two people click edit simultaneously on a post, only the later person's content remains and the first person's work disappears.
   (데이터 증발: 두 명이 동시에 게시글 수정 버튼을 눌렀을 때, 나중에 저장한 사람의 내용만 남고 앞사람의 작업은 사라지는 상황)
 
@@ -366,20 +366,20 @@ If isolation is not guaranteed, the following accidents can occur. (고립성이
 Session A                          Session B
 ─────────────────────────────────────────────
 START TRANSACTION;
-  SELECT balance;  -- 1,000,000 (locking starts) (잠금 시작)
+  SELECT balance;  -- 1000 (locking starts) (잠금 시작)
   [This row cannot be seen by other sessions during A's transaction] (A의 트랜잭션 동안 이 행을 다른 세션이 볼 수 없음)
 
                                 START TRANSACTION;
                                   SELECT balance;  -- Waiting... 🔄
                                   -- Waiting for A's transaction to end (A의 트랜잭션이 끝날 때까지 기다림)
   UPDATE accounts 
-  SET balance = 900,000;
+  SET balance = 900;
   COMMIT;  -- Locking released (잠금 해제)
 
                                   -- Now can finally read data (이제 비로소 데이터를 읽을 수 있음)
-                                  SELECT balance;  -- 900,000
+                                  SELECT balance;  -- 900
                                   UPDATE accounts 
-                                  SET balance = 800,000;
+                                  SET balance = 800;
                                   COMMIT;
 
 Result: Safe! ✅ (안전함! ✅)
@@ -396,7 +396,7 @@ Result: Safe! ✅ (안전함! ✅)
 
 ```sql
 START TRANSACTION;
-  INSERT INTO employees VALUES (10, 'New Employee', 1, 3500000);
+  INSERT INTO employees VALUES (10, 'New Employee', 1, 350);
 COMMIT;  -- Data is now permanently saved ✅ (데이터가 이제 영구적으로 저장됨 ✅)
 
 -- At this moment:
@@ -435,9 +435,9 @@ Disk (non-volatile) ← Permanently saved! (영구 저장됨!)
 
 ```sql
 START TRANSACTION;
-  INSERT INTO employees VALUES (10, 'Employee1', 1, 3000000);  -- ✅ Success
-  INSERT INTO employees VALUES (11, 'Employee2', 1, 3500000);  -- ✅ Success
-  INSERT INTO employees VALUES (12, 'Employee3', 99, 3700000); -- ❌ Error!
+  INSERT INTO employees VALUES (10, 'Employee1', 1, 300);  -- ✅ Success
+  INSERT INTO employees VALUES (11, 'Employee2', 1, 350);  -- ✅ Success
+  INSERT INTO employees VALUES (12, 'Employee3', 99, 370); -- ❌ Error!
 
 ROLLBACK;  -- All cancelled (first two also!) (모두 취소됨 처음 두 개도!)
 -- But I wanted to keep the first two... (하지만 처음 두 개는 지키고 싶었는데...)
@@ -447,18 +447,18 @@ ROLLBACK;  -- All cancelled (first two also!) (모두 취소됨 처음 두 개�
 
 ```sql
 START TRANSACTION;
-  INSERT INTO employees VALUES (10, 'Employee1', 1, 3000000);  -- ✅ Success
-  INSERT INTO employees VALUES (11, 'Employee2', 1, 3500000);  -- ✅ Success
+  INSERT INTO employees VALUES (10, 'Employee1', 1, 300);  -- ✅ Success
+  INSERT INTO employees VALUES (11, 'Employee2', 1, 350);  -- ✅ Success
   
   SAVEPOINT sp1;  -- Mark this point (이 지점을 표시해둠)
   
-  INSERT INTO employees VALUES (12, 'Employee3', 99, 3700000); -- ❌ Error!
+  INSERT INTO employees VALUES (12, 'Employee3', 99, 370); -- ❌ Error!
   
   -- Rollback only to sp1 (first two are kept) (sp1까지만 롤백 처음 두 개는 유지)
   ROLLBACK TO sp1;
   
   -- Now try again with correct data (이제 올바른 데이터로 다시 시도)
-  INSERT INTO employees VALUES (12, 'Employee3', 1, 3700000);  -- ✅ Success!
+  INSERT INTO employees VALUES (12, 'Employee3', 1, 370);  -- ✅ Success!
   
 COMMIT;  -- All three are inserted! ✅ (세 명 모두 삽입됨! ✅)
 ```
