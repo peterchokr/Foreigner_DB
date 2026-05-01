@@ -128,18 +128,7 @@ UPDATE employee_view SET salary = 5000000 WHERE employee_id = 1;
 
 ---
 
-### 10.5 View vs Table
-
-| Feature      | View                             | Table            |
-| ------------ | -------------------------------- | ---------------- |
-| Storage      | Virtual (only definition stored) | Real data stored |
-| Performance  | Calculated each time             | Pre-stored       |
-| Modification | Limited                          | Free             |
-| Purpose      | Abstraction, security            | Data storage     |
-
----
-
-### 10.6 Stored Procedure
+### 10.5 Stored Procedure
 
 A stored procedure is a reusable SQL routine stored in the database. (저장프로시저는 데이터베이스에 저장되는 재사용 가능한 SQL 루틴입니다.)
 
@@ -173,7 +162,7 @@ END;
 
 ---
 
-### 10.7 Stored Procedure Parameters
+### 10.6 Stored Procedure Parameters
 
 **IN (Input Parameter):**
 
@@ -210,7 +199,7 @@ END;
 
 ---
 
-### 10.8 Stored Procedure Control Structures
+### 10.7 Stored Procedure Control Structures
 
 **IF-THEN-ELSE:**
 
@@ -265,7 +254,7 @@ END;
 
 ---
 
-### 10.9 Execute Stored Procedure
+### 10.8 Execute Stored Procedure
 
 **Execute with CALL Statement (CALL 문으로 실행):**
 
@@ -285,7 +274,7 @@ SELECT @count;
 
 ---
 
-### 10.10 Drop Stored Procedure
+### 10.9 Drop Stored Procedure
 
 **Drop Procedure (프로시저 삭제):**
 
