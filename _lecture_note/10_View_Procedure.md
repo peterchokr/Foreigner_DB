@@ -419,7 +419,7 @@ CREATE PROCEDURE GetEmployeeCount (OUT emp_count INT)
 BEGIN
   SELECT COUNT(*) INTO emp_count FROM employees;
 END //
-DELIMITER //
+DELIMITER ;
 
 CALL GetEmployeeCount(@count);
 SELECT @count;
