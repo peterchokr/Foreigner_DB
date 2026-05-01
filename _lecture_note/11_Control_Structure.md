@@ -530,53 +530,10 @@ DELIMITER ;
 CALL LoopWithIterate(20);
 
 -- =====================================================
--- Section 4: Nesting and Combination (11-12) (섹션 4: 중첩과 결합 11-12번)
+-- Section 4: Real-world Application (11-12) (섹션 4: 실무 응용 11-12번)
 -- =====================================================
 
--- 11. Nested loops (loop within loop) (중첩 반복문 반복문 안의 반복문)
-DELIMITER //
-CREATE PROCEDURE NestedLoops (IN row_count INT, IN col_count INT)
-BEGIN
-  DECLARE i INT DEFAULT 1;
-  DECLARE j INT DEFAULT 1;
-  WHILE i <= row_count DO
-    SET j = 1;
-    WHILE j <= col_count DO
-      INSERT INTO temp_table (id, data) VALUES (i*10 + j, CONCAT('Row ', i, ' Col ', j));
-      SET j = j + 1;
-    END WHILE;
-    SET i = i + 1;
-  END WHILE;
-END //
-DELIMITER ;
-
-CALL NestedLoops(5, 5);
-
--- 12. IF and loop combination (conditional loop processing) (IF와 반복문 조합 조건부 반복 처리)
-DELIMITER //
-CREATE PROCEDURE IfAndWhile (IN max_num INT)
-BEGIN
-  DECLARE i INT DEFAULT 1;
-  WHILE i <= max_num DO
-    IF i % 5 = 0 THEN
-      INSERT INTO temp_table (id, data) VALUES (i, 'Divisible by 5');
-    ELSEIF i % 3 = 0 THEN
-      INSERT INTO temp_table (id, data) VALUES (i, 'Divisible by 3');
-    ELSE
-      INSERT INTO temp_table (id, data) VALUES (i, 'Other');
-    END IF;
-    SET i = i + 1;
-  END WHILE;
-END //
-DELIMITER ;
-
-CALL IfAndWhile(30);
-
--- =====================================================
--- Section 5: Real-world Application (13-15) (섹션 5: 실무 응용 13-15번)
--- =====================================================
-
--- 13. Conditional INSERT (conditional insertion) (조건부 INSERT 조건에 따른 삽입)
+-- 11. Conditional INSERT (conditional insertion) (조건부 INSERT 조건에 따른 삽입)
 DELIMITER //
 CREATE PROCEDURE ConditionalInsert (IN emp_salary DECIMAL)
 BEGIN
@@ -592,7 +549,7 @@ DELIMITER ;
 
 CALL ConditionalInsert(4500000);
 
--- 14. Conditional UPDATE (conditional update) (조건부 UPDATE 조건에 따른 수정)
+-- 12. Conditional UPDATE (conditional update) (조건부 UPDATE 조건에 따른 수정)
 DELIMITER //
 CREATE PROCEDURE ConditionalUpdate (IN emp_id INT, IN new_salary DECIMAL)
 BEGIN
@@ -609,21 +566,6 @@ DELIMITER ;
 
 CALL ConditionalUpdate(1, 6000000);
 
--- 15. Loop with counter (iteration limit) (루프 카운터 반복 횟수 제한)
-DELIMITER //
-CREATE PROCEDURE LoopWithCounter (IN limit_count INT)
-BEGIN
-  DECLARE counter INT DEFAULT 0;
-  DECLARE max_iterations INT DEFAULT limit_count;
-  
-  WHILE counter < max_iterations DO
-    INSERT INTO temp_table (id, data) VALUES (counter, CONCAT('Iteration ', counter));
-    SET counter = counter + 1;
-  END WHILE;
-END //
-DELIMITER ;
-
-CALL LoopWithCounter(100);
 ```
 
 ---
