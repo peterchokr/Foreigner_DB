@@ -398,7 +398,7 @@ VALUES ('Jessica Anderson', 4200000);
 UPDATE employee_view SET salary = 4800000 WHERE employee_id = 2;
 
 -- =====================================================
--- Section 3: Stored Procedure Basics (9-13) (섹션 3: 저장프로시저 기본 9-13번)
+-- Section 3: Stored Procedure Basics (9-14) (섹션 3: 저장프로시저 기본 9-14번)
 -- =====================================================
 
 -- 9. Basic stored procedure (input parameter) (기본 저장프로시저 입력 매개변수)
@@ -471,10 +471,6 @@ DELIMITER ;
 CALL GetGrade(85, @result);
 SELECT @result;
 
--- =====================================================
--- Section 4: Advanced Procedure (14-16) (섹션 4: 고급 프로시저 14-16번)
--- =====================================================
-
 -- 14. WHILE loop (repetitive processing) (WHILE 루프 반복 처리)
 DELIMITER //
 CREATE PROCEDURE InsertSampleData (IN count INT)
@@ -490,43 +486,12 @@ DELIMITER ;
 
 CALL InsertSampleData(5);
 
--- 15. Variable declaration and assignment (salary statistics) (변수 선언과 할당 급여 통계)
-DELIMITER //
-CREATE PROCEDURE CalculateSalaryInfo ()
-BEGIN
-  DECLARE total_salary DECIMAL;
-  DECLARE avg_salary DECIMAL;
-  DECLARE emp_count INT;
-  
-  SELECT SUM(salary) INTO total_salary FROM employees;
-  SELECT AVG(salary) INTO avg_salary FROM employees;
-  SELECT COUNT(*) INTO emp_count FROM employees;
-  
-  SELECT total_salary, avg_salary, emp_count;
-END //
-DELIMITER ;
-
-CALL CalculateSalaryInfo();
-
--- 16. Procedure with transaction (department transfer) (트랜잭션 포함 프로시저 부서 이동)
-DELIMITER //
-CREATE PROCEDURE TransferEmployee (IN emp_id INT, IN new_dept INT)
-BEGIN
-  START TRANSACTION;
-  
-  UPDATE employees SET dept_id = new_dept WHERE employee_id = emp_id;
-  
-  COMMIT;
-END //
-DELIMITER ;
-
-CALL TransferEmployee(1, 2);
 
 -- =====================================================
--- Section 5: Real-world Application (17-20) (섹션 5: 실무 응용 17-20번)
+-- Section 4: Real-world Application (15-16) (섹션 4: 실무 응용 15-16번)
 -- =====================================================
 
--- 17. Data validation procedure (check existence) (데이터 검증 프로시저 존재 여부 확인)
+-- 15. Data validation procedure (check existence) (데이터 검증 프로시저 존재 여부 확인)
 DELIMITER //
 CREATE PROCEDURE ValidateEmployee (IN emp_id INT, OUT is_valid INT)
 BEGIN
@@ -541,7 +506,7 @@ DELIMITER ;
 CALL ValidateEmployee(1, @valid);
 SELECT @valid;
 
--- 18. Statistics calculation procedure (total, average, maximum) (통계 계산 프로시저 총합, 평균, 최고값)
+-- 16. Statistics calculation procedure (total, average, maximum) (통계 계산 프로시저 총합, 평균, 최고값)
 DELIMITER //
 CREATE PROCEDURE GetSalaryStatistics (OUT total DECIMAL, OUT average DECIMAL, OUT max DECIMAL)
 BEGIN
@@ -553,34 +518,6 @@ DELIMITER ;
 CALL GetSalaryStatistics(@t, @a, @m);
 SELECT @t AS total, @a AS average, @m AS max;
 
--- 19. Migration procedure (data transfer) (마이그레이션 프로시저 데이터 이전)
-DELIMITER //
-CREATE PROCEDURE MigrateOldEmployees ()
-BEGIN
-  START TRANSACTION;
-  
-  INSERT INTO employees_archive
-  SELECT * FROM employees WHERE hire_date < '2020-01-01';
-  
-  DELETE FROM employees WHERE hire_date < '2020-01-01';
-  
-  COMMIT;
-END //
-DELIMITER ;
-
-CALL MigrateOldEmployees();
-
--- 20. Backup procedure (data copy) (백업 프로시저 데이터 복사)
-DELIMITER //
-CREATE PROCEDURE BackupData ()
-BEGIN
-  DELETE FROM employees_archive;
-  INSERT INTO employees_archive
-  SELECT * FROM employees;
-END //
-DELIMITER ;
-
-CALL BackupData();
 ```
 
 ---
