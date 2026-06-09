@@ -80,55 +80,10 @@ WHERE termination_date IS NULL;
 
 ---
 
-### 10.3 Modify and Drop Views
-
-**Modify View (뷰 수정):**
-
-```sql
-ALTER VIEW view_name AS
-SELECT column1, column2, ...
-FROM table_name;
-```
-
-**Drop View (뷰 삭제):**
-
-```sql
-DROP VIEW view_name;
-DROP VIEW IF EXISTS view_name;  -- Ignore error if not exists (존재하지 않으면 오류 무시)
-```
-
-**Drop Multiple Views (여러 뷰 삭제):**
-
-```sql
-DROP VIEW view1, view2, view3;
-```
 
 ---
 
-### 10.4 Updatable View
-
-If certain conditions are met, INSERT, UPDATE, DELETE are possible on views. (특정 조건을 만족하면 뷰에 INSERT, UPDATE, DELETE가 가능합니다.)
-
-**Conditions (조건):**
-
-- Based on single table (단일 테이블을 기반으로 함)
-- Does not include GROUP BY, DISTINCT, JOIN (GROUP BY, DISTINCT, JOIN을 포함하지 않음)
-- Does not include subquery, UNION (서브쿼리, UNION을 포함하지 않음)
-- Does not include HAVING, LIMIT (HAVING, LIMIT을 포함하지 않음)
-
-**Example (예시):**
-
-```sql
-CREATE VIEW employee_view AS
-SELECT employee_id, name, salary FROM employees;
-
--- Update through view (뷰를 통한 수정 가능)
-UPDATE employee_view SET salary = 5000000 WHERE employee_id = 1;
-```
-
----
-
-### 10.5 Stored Procedure
+### 10.3 Stored Procedure
 
 A stored procedure is a reusable SQL routine stored in the database. (저장프로시저는 데이터베이스에 저장되는 재사용 가능한 SQL 루틴입니다.)
 
@@ -162,7 +117,7 @@ END;
 
 ---
 
-### 10.6 Stored Procedure Parameters
+### 10.4 Stored Procedure Parameters
 
 **IN (Input Parameter):**
 
@@ -199,7 +154,7 @@ END;
 
 ---
 
-### 10.7 Stored Procedure Control Structures
+### 10.5 Stored Procedure Control Structures
 
 **IF-THEN-ELSE:**
 
@@ -254,7 +209,7 @@ END;
 
 ---
 
-### 10.8 Execute Stored Procedure
+### 10.6 Execute Stored Procedure
 
 **Execute with CALL Statement (CALL 문으로 실행):**
 
@@ -274,7 +229,7 @@ SELECT @count;
 
 ---
 
-### 10.9 Drop Stored Procedure
+### 10.7 Drop Stored Procedure
 
 **Drop Procedure (프로시저 삭제):**
 
@@ -382,26 +337,12 @@ SELECT * FROM high_salary_employees;
 -- 5. Drop view (뷰 삭제)
 DROP VIEW IF EXISTS high_salary_employees;
 
--- =====================================================
--- Section 2: Updatable View (6-8) (섹션 2: 수정 가능한 뷰 6-8번)
--- =====================================================
-
--- 6. Updatable view (single table, simple condition) (수정 가능한 뷰 단일 테이블, 단순 조건)
-CREATE VIEW employee_view AS
-SELECT employee_id, name, salary FROM employees;
-
--- 7. INSERT through view (뷰를 통한 INSERT)
-INSERT INTO employee_view (name, salary)
-VALUES ('Jessica Anderson', 4200000);
-
--- 8. UPDATE through view (뷰를 통한 UPDATE)
-UPDATE employee_view SET salary = 4800000 WHERE employee_id = 2;
 
 -- =====================================================
--- Section 3: Stored Procedure Basics (9-14) (섹션 3: 저장프로시저 기본 9-14번)
+-- Section 3: Stored Procedure Basics (6-11) (섹션 3: 저장프로시저 기본 6-11번)
 -- =====================================================
 
--- 9. Basic stored procedure (input parameter) (기본 저장프로시저 입력 매개변수)
+-- 6. Basic stored procedure (input parameter) (기본 저장프로시저 입력 매개변수)
 DELIMITER //
 CREATE PROCEDURE GetEmployeeInfo (IN emp_id INT)
 BEGIN
@@ -413,7 +354,7 @@ DELIMITER ;
 
 CALL GetEmployeeInfo(1);
 
--- 10. Output parameter (return result) (출력 매개변수 결과 반환)
+-- 7. Output parameter (return result) (출력 매개변수 결과 반환)
 DELIMITER //
 CREATE PROCEDURE GetEmployeeCount (OUT emp_count INT)
 BEGIN
@@ -424,7 +365,7 @@ DELIMITER ;
 CALL GetEmployeeCount(@count);
 SELECT @count;
 
--- 11. Input/Output parameter (salary increase) (입출력 매개변수 급여 인상)
+-- 8. Input/Output parameter (salary increase) (입출력 매개변수 급여 인상)
 DELIMITER //
 CREATE PROCEDURE IncreaseSalary (INOUT salary DECIMAL)
 BEGIN
@@ -436,7 +377,7 @@ SET @my_salary = 5000000;
 CALL IncreaseSalary(@my_salary);
 SELECT @my_salary;
 
--- 12. IF-ELSE conditional statement (salary level classification) (IF-ELSE 조건문 급여 수준 분류)
+-- 9. IF-ELSE conditional statement (salary level classification) (IF-ELSE 조건문 급여 수준 분류)
 DELIMITER //
 CREATE PROCEDURE CheckSalaryLevel (IN emp_id INT)
 BEGIN
@@ -455,7 +396,7 @@ DELIMITER ;
 
 CALL CheckSalaryLevel(1);
 
--- 13. CASE statement (grade assignment) (CASE 문 학점 할당)
+-- 10. CASE statement (grade assignment) (CASE 문 학점 할당)
 DELIMITER //
 CREATE PROCEDURE GetGrade (IN score INT, OUT grade CHAR(1))
 BEGIN
@@ -471,7 +412,7 @@ DELIMITER ;
 CALL GetGrade(85, @result);
 SELECT @result;
 
--- 14. WHILE loop (repetitive processing) (WHILE 루프 반복 처리)
+-- 11. WHILE loop (repetitive processing) (WHILE 루프 반복 처리)
 DELIMITER //
 CREATE PROCEDURE InsertSampleData (IN count INT)
 BEGIN
@@ -487,36 +428,6 @@ DELIMITER ;
 CALL InsertSampleData(5);
 
 
--- =====================================================
--- Section 4: Real-world Application (15-16) (섹션 4: 실무 응용 15-16번)
--- =====================================================
-
--- 15. Data validation procedure (check existence) (데이터 검증 프로시저 존재 여부 확인)
-DELIMITER //
-CREATE PROCEDURE ValidateEmployee (IN emp_id INT, OUT is_valid INT)
-BEGIN
-  IF EXISTS(SELECT 1 FROM employees WHERE employee_id = emp_id) THEN
-    SET is_valid = 1;
-  ELSE
-    SET is_valid = 0;
-  END IF;
-END //
-DELIMITER ;
-
-CALL ValidateEmployee(1, @valid);
-SELECT @valid;
-
--- 16. Statistics calculation procedure (total, average, maximum) (통계 계산 프로시저 총합, 평균, 최고값)
-DELIMITER //
-CREATE PROCEDURE GetSalaryStatistics (OUT total DECIMAL, OUT average DECIMAL, OUT max DECIMAL)
-BEGIN
-  SELECT SUM(salary), AVG(salary), MAX(salary)
-  INTO total, average, max FROM employees;
-END //
-DELIMITER ;
-
-CALL GetSalaryStatistics(@t, @a, @m);
-SELECT @t AS total, @a AS average, @m AS max;
 
 ```
 
